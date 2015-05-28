@@ -215,7 +215,7 @@ public class PaypalServices {
 	}
 
 	@GET 
-	@Path("/card/credit/create/{accessToken}")
+	@Path("/card/credit/create/{accessToken}/{cardType}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public CreditCard createCreditCard(@PathParam("accessToken") String accessToken, 
