@@ -16,6 +16,9 @@ public class GenerateAccessToken {
 		String clientID = ConfigManager.getInstance().getValue(Constants.CLIENT_ID);
 		String clientSecret = ConfigManager.getInstance().getValue(
 				Constants.CLIENT_SECRET);
+		
+		clientID = "AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS";
+		clientSecret = "EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL";
 
 		return new OAuthTokenCredential(clientID, clientSecret)
 				.getAccessToken();
