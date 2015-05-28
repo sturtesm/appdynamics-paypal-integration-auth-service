@@ -61,7 +61,7 @@ public class PaypalServices {
 	}
 
 	@GET
-	@Path("/payment/history")
+	@Path("/payment/history/{count}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public PaymentHistory getPaymentHistory(@PathParam("count") String count) throws PayPalRESTException {
