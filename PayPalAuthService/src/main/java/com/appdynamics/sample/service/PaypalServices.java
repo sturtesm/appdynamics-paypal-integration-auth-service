@@ -215,10 +215,12 @@ public class PaypalServices {
 	}
 
 	@GET 
-	@Path("/card/credit/create/{accessToken}/{cardType}")
+	@Path("/card/credit/create/{accessToken}/{cardNumber}/{cardType}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public CreditCard createCreditCard(@PathParam("accessToken") String accessToken, 
+	public CreditCard createCreditCard(
+			@PathParam("accessToken") String accessToken,
+			@PathParam("cardNumber") String cardNumber,
 			@PathParam("cardType") String cardType) throws PayPalRESTException {
 
 		if (cardType == null) {
@@ -243,7 +245,7 @@ public class PaypalServices {
 		CreditCard creditCard = new CreditCard();
 		creditCard.setExpireMonth(11);
 		creditCard.setExpireYear(2018);
-		creditCard.setNumber("4417119669820331");
+		creditCard.setNumber(cardNumber);
 		creditCard.setType(cardType);
 
 		try {
