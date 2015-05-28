@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,8 +20,8 @@ import com.paypal.api.payments.FundingInstrument;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.Transaction;
-import com.paypal.core.rest.APIContext;
-import com.paypal.core.rest.PayPalRESTException;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
 
 
 @Path("/paypal")
@@ -169,7 +168,7 @@ public class PayPalAuthService {
 		// used to fund a payment.
 		CreditCard creditCard = new CreditCard();
 		creditCard.setBillingAddress(billingAddress);
-		creditCard.setCvv2("874");
+		creditCard.setCvv2(874);
 		creditCard.setExpireMonth(11);
 		creditCard.setExpireYear(2018);
 		creditCard.setFirstName("Joe");
