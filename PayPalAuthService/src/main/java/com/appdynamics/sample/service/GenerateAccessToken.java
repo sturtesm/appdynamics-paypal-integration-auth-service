@@ -20,7 +20,6 @@ public class GenerateAccessToken {
 		clientID = "AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS";
 		clientSecret = "EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL";
 
-		return new OAuthTokenCredential(clientID, clientSecret)
-				.getAccessToken();
+		return new OAuthTokenCredential(clientID, clientSecret).getAccessToken();
 	}
 }
