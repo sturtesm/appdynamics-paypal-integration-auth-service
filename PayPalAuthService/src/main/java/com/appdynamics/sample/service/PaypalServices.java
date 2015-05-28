@@ -63,7 +63,6 @@ public class PaypalServices {
 	@GET
 	@Path("/payment/history")
 	@Produces("text/plain")
-	@Consumes("text/plain")
 	public PaymentHistory getPaymentHistory() throws PayPalRESTException {
 		
 		Map<String, String> containerMap = new HashMap<String, String>();
