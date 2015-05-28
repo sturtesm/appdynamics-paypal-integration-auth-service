@@ -63,7 +63,7 @@ public class PaypalServices {
 	@GET
 	@Path("/payment/history")
 	@Produces("text/plain")
-	public void getPaymentHistory() throws PayPalRESTException {
+	public Payment getPaymentHistory() throws PayPalRESTException {
 		Map<String, String> containerMap = new HashMap<String, String>();
 		containerMap.put("count", "10");
 		try {
@@ -84,13 +84,18 @@ public class PaypalServices {
 			// query parameters for paginations and filtering.
 			// Refer the API documentation
 			// for valid values for keys
-			PaymentHistory paymentHistory = Payment.list(accessToken,
-					containerMap);
-
-			logger.info("Payment History = " + paymentHistory.toString());
+		
+			Payment payment = Payment.get(accessToken,
+					"PAY-0XL713371A312273YKE2GCNI");
+			
+			logger.info("Payment retrieved ID = " + payment.getId()
+					+ ", status = " + payment.getState());
+			
+			return payment;
+			
 		} catch (PayPalRESTException e) {
 			e.printStackTrace();
-
+			
 			throw e;
 		}
 	}
