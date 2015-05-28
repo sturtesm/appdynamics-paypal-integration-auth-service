@@ -215,7 +215,7 @@ public class PaypalServices {
 	}
 
 	@GET 
-	@Path("/card/credit/create")
+	@Path("/card/credit/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public CreditCard createCreditCard(@PathParam("accessToken") String accessToken, 
@@ -281,7 +281,7 @@ public class PaypalServices {
 
 
 	@GET
-	@Path("/payment/credit/create")
+	@Path("/payment/credit/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public Payment createPayment(@PathParam("accessToken") String accessToken) throws PayPalRESTException 
