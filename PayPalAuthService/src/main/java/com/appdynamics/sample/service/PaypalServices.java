@@ -119,7 +119,7 @@ public class PaypalServices {
 	}
 
 	@GET
-	@Path("/payment/paypal/create")
+	@Path("/payment/paypal/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public Payment createPaypalPayment(@PathParam("accessToken") String accessToken)
