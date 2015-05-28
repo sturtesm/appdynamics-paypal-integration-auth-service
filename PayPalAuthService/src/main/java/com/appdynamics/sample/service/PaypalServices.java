@@ -63,9 +63,25 @@ public class PaypalServices {
 	@GET
 	@Path("/payment/history")
 	@Produces("text/plain")
-	public PaymentHistory getPaymentHistory() throws PayPalRESTException {
+	@Consumes("text/plain")
+	public PaymentHistory getPaymentHistory(@PathParam("count") String count) throws PayPalRESTException {
+		
 		Map<String, String> containerMap = new HashMap<String, String>();
-		containerMap.put("count", "10");
+		Integer historyLength = null;
+		
+		if (count == null || count.trim().length() == 0) {
+			historyLength = new Integer(10);
+		}
+		else {
+			try {
+				historyLength = new Integer(count);
+			}
+			catch (Exception e) {
+				historyLength = 10;
+			}
+		}
+		
+		containerMap.put("count", historyLength.toString());
 		
 		try {
 
