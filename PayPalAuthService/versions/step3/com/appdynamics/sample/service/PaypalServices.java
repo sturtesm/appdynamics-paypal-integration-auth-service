@@ -50,7 +50,7 @@ public class PaypalServices {
 	@Path("/payment/history/{history}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public PaymentHistory getPaymentHistory(@PathParam("history") String history) throws PayPalRESTException {
+	public String getPaymentHistory(@PathParam("history") String history) throws PayPalRESTException {
 		return "[Stubbed Interface]  Account history will be provided here...";
 	}
 
@@ -58,7 +58,7 @@ public class PaypalServices {
 	@Path("/payment/paypal/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public Payment createPaypalPayment(@PathParam("accessToken") String accessToken)
+	public String createPaypalPayment(@PathParam("accessToken") String accessToken)
 			throws PayPalRESTException
 	{
 		return "[Stubbed Interface]  Submitting a PayPal based payment will be added here";
@@ -68,7 +68,7 @@ public class PaypalServices {
 	@Path("/card/credit/create/{accessToken}/{cardNumber}/{cardType}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public CreditCard createCreditCard(
+	public String createCreditCard(
 			@PathParam("accessToken") String accessToken,
 			@PathParam("cardNumber") String cardNumber,
 			@PathParam("cardType") String cardType) throws PayPalRESTException 
@@ -82,7 +82,7 @@ public class PaypalServices {
 	@Path("/payment/credit/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public Payment createPayment(@PathParam("accessToken") String accessToken) throws PayPalRESTException 
+	public String createPayment(@PathParam("accessToken") String accessToken) throws PayPalRESTException 
 	{
 		return "[Stubbed Interface]  Submitting a credit card based payment will be added here";
 	}
