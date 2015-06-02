@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 
 import org.apache.log4j.Logger;
 
+import com.appdynamics.sample.service.PaymentCardInfo.PaymentCard;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.CreditCard;
@@ -286,17 +287,22 @@ public class PaypalServices {
 	@Path("/payment/credit/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public Payment createPayment(@PathParam("accessToken") String accessToken) throws PayPalRESTException 
+	public Payment createPayment(@PathParam("accessToken") String accessToken) 
+			throws PayPalRESTException, Exception 
 	{
 		if (accessToken == null) {
 			getAccessToken();
 		}
 
+		PaymentCardInfo cardInfo = PaymentCardInfo.instance();
+		
+		PaymentCard card = cardInfo.getCard();
+		
 		/** gets a random billing address */
-		Address billingAddress = getAddress();
-
+		Address billingAddress = getAddress(card.getCardCity());
+		
 		/** gets a new credit card */
-		CreditCard creditCard = getCreditCard(billingAddress);
+		CreditCard creditCard = getCreditCard(card, billingAddress);
 
 		// ###Details
 		// Let's you specify details of a payment amount.
@@ -393,7 +399,12 @@ public class PaypalServices {
 
 	}
 
-	private CreditCard getCreditCard(Address address) {
+	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
+		
+		if (card.getCardType().equalsIgnoreCase("Discover")) {
+			throw new Exception("Invalid card, we don't take Discover yet!");
+		}
+		
 		// ###CreditCard
 		// A resource representing a credit card that can be
 		// used to fund a payment.
@@ -404,18 +415,18 @@ public class PaypalServices {
 		creditCard.setExpireYear(2018);
 		creditCard.setFirstName("Joe");
 		creditCard.setLastName("Shopper");
-		creditCard.setNumber("5500005555555559");
-		creditCard.setType("mastercard");
+		creditCard.setNumber(card.getCardNumber());
+		creditCard.setType(card.getCardType());
 
 		return creditCard;
 	}
 
-	private Address getAddress() {
+	private Address getAddress(String city) {
 		// ###Address
 		// Base Address object used as shipping or billing
 		// address in a payment. [Optional]
 		Address address = new Address();
-		address.setCity("Johnstown");
+		address.setCity(city);
 		address.setCountryCode("US");
 		address.setLine1("52 N Main ST");
 		address.setPostalCode("43210");
