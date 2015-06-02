@@ -298,6 +298,8 @@ public class PaypalServices {
 		
 		PaymentCard card = cardInfo.getCard();
 		
+		logger.info("Got Card: " + card.getCardType() + ", Number: " + card.getCardNumber());
+		
 		/** gets a random billing address */
 		Address billingAddress = getAddress(card.getCardCity());
 		
