@@ -1,1 +1,1 @@
-Creates a set of services that are stubbed, no integration with PayPal
+Creates the integration with PayPal using the PayPal SDK
