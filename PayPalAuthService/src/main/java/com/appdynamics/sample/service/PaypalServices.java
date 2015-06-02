@@ -287,7 +287,8 @@ public class PaypalServices {
 	@Path("/payment/credit/create/{accessToken}")
 	@Produces("text/plain")
 	@Consumes("text/plain")
-	public Payment createPayment(@PathParam("accessToken") String accessToken) throws PayPalRESTException 
+	public Payment createPayment(@PathParam("accessToken") String accessToken) 
+			throws PayPalRESTException, Exception 
 	{
 		if (accessToken == null) {
 			getAccessToken();
@@ -398,7 +399,11 @@ public class PaypalServices {
 
 	}
 
-	private CreditCard getCreditCard(PaymentCard card, Address address) {
+	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
+		
+		if (card.getCardType().equalsIgnoreCase("Discover")) {
+			throw new Exception("Invalid card, we don't take Discover yet!");
+		}
 		
 		// ###CreditCard
 		// A resource representing a credit card that can be
