@@ -98,7 +98,7 @@ public class PaymentCardInfo {
 		}
 		finally {
 			if (card == null) {
-				card = createCard("5105105105105100", "visa", "dallas");
+				card = createCard("4012888888881881", "visa", "dallas");
 			}
 		}
 		
