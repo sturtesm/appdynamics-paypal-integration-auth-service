@@ -1,1 +1,1 @@
-Creates the integration with PayPal using the PayPal SDK
+Step 4 - Injects a fault into the integration with PayPal, causing a transaction to fail
