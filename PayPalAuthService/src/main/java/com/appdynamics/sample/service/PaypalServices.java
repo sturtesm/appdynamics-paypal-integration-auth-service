@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -67,10 +66,10 @@ public class PaypalServices {
 	@Produces("text/plain")
 	@Consumes("text/plain")
 	public PaymentHistory getPaymentHistory(@PathParam("history") String history) throws PayPalRESTException {
-
+		
 		Map<String, String> containerMap = new HashMap<String, String>();
 		Integer historyLength = 10;
-
+		
 		if (history == null || history.trim().length() == 0) {
 			historyLength = new Integer(10);
 		}
@@ -82,9 +81,9 @@ public class PaypalServices {
 				historyLength = 10;
 			}
 		}
-
+		
 		containerMap.put("count", historyLength.toString());
-
+		
 		try {
 
 			// ###AccessToken
@@ -103,19 +102,19 @@ public class PaypalServices {
 			// query parameters for paginations and filtering.
 			// Refer the API documentation
 			// for valid values for keys
-
+			
 			logger.info("Got access token: " + accessToken);
-
+			
 			PaymentHistory paymentHistory = Payment.list(accessToken,
-					containerMap);
-
+                    containerMap);
+			
 			logger.info("Payment history retrieved: " + paymentHistory);
-
+			
 			return paymentHistory;
-
+			
 		} catch (PayPalRESTException e) {
 			e.printStackTrace();
-
+			
 			throw e;
 		}
 	}
@@ -126,7 +125,7 @@ public class PaypalServices {
 	@Consumes("text/plain")
 	public Payment createPaypalPayment(@PathParam("accessToken") String accessToken)
 			throws PayPalRESTException
-			{
+	{
 		Payment createdPayment = null;
 
 		// ###AccessToken
@@ -214,7 +213,7 @@ public class PaypalServices {
 			e.printStackTrace();
 		}
 		return createdPayment;
-			}
+	}
 
 	@GET 
 	@Path("/card/credit/create/{accessToken}/{cardNumber}/{cardType}")
@@ -290,36 +289,37 @@ public class PaypalServices {
 	@Consumes("text/plain")
 	public Payment createPayment(@PathParam("accessToken") String accessToken) 
 			throws PayPalRESTException, Exception 
-			{
+	{
 		if (accessToken == null) {
 			getAccessToken();
 		}
 
 		PaymentCardInfo cardInfo = PaymentCardInfo.instance();
-
+		
 		PaymentCard card = cardInfo.getCard();
-
+		
 		/** gets a random billing address */
 		Address billingAddress = getAddress(card.getCardCity());
-
-
-		// ###Details
-		// Let's you specify details of a payment amount.
-		Details details = new Details();
-		details.setShipping("1");
-		details.setSubtotal("5");
-		details.setTax("1");
 		
+		/** gets a new credit card */
+		CreditCard creditCard = getCreditCard(card, billingAddress);
+
+         PaymentDetails paymentDetails = new PaymentDetails();
+                        
+         //  ###Details
+                        //      // Let's you specify details of a payment amount.
+                        //              Details details = new Details();
+                        //                      details.setShipping(new Integer(paymentDetails.getShipping()).toString());
+                        //                              details.setSubtotal(new Integer(paymentDetails.getSubTotal()).toString());
+                        //                                      details.setTax(new Integer(paymentDetails.getTax()).toString());
+                        //
 		// ###Amount
 		// Let's you specify a payment amount.
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
 		// Total must be equal to sum of shipping, tax and subtotal.
-		amount.setTotal(getPaymentTotal().toString());
+		amount.setTotal("7");
 		amount.setDetails(details);
-
-		/** gets a new credit card */
-		CreditCard creditCard = getCreditCard(card, billingAddress);
 
 		// ###Transaction
 		// A transaction defines the contract of a
@@ -399,18 +399,16 @@ public class PaypalServices {
 		}
 		return createdPayment;
 
-			}
-
-	private Integer getPaymentTotal() {
-		return new Integer(new Random().nextInt(100) + 50);
 	}
 
 	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
-
+		
+		/** Save this exception for Step 4
 		if (card.getCardType().equalsIgnoreCase("Discover")) {
 			throw new Exception("Invalid card, we don't take Discover yet!");
 		}
-
+		**/
+		
 		// ###CreditCard
 		// A resource representing a credit card that can be
 		// used to fund a payment.
