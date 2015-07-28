@@ -320,6 +320,12 @@ public class PaypalServices {
 		// Total must be equal to sum of shipping, tax and subtotal.
 		amount.setTotal(new Integer(paymentDetails.getPaymentTotal()).toString());
 		amount.setDetails(details);
+		
+		String msg = String.format("Payment Details, Shipping=%d, SubTotal=%d, Tax=%d.  Total=%d",
+				paymentDetails.getShipping(), paymentDetails.getSubTotal(), 
+				paymentDetails.getTax(), paymentDetails.getPaymentTotal());
+		
+		logger.info(msg);
 
 		// ###Transaction
 		// A transaction defines the contract of a

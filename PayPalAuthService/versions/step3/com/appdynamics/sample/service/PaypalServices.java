@@ -312,6 +312,12 @@ public class PaypalServices {
 		details.setShipping(new Integer(paymentDetails.getShipping()).toString());
 		details.setSubtotal(new Integer(paymentDetails.getSubTotal()).toString());
 		details.setTax(new Integer(paymentDetails.getTax()).toString());
+		
+		String msg = String.format("Payment Details, Shipping=%d, SubTotal=%d, Tax=%d.  Total=%d",
+				paymentDetails.getShipping(), paymentDetails.getSubTotal(), 
+				paymentDetails.getTax(), paymentDetails.getPaymentTotal());
+		
+		logger.info(msg);
 
 		// ###Amount
 		// Let's you specify a payment amount.
