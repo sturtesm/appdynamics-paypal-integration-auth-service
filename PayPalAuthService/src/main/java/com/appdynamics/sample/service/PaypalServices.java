@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -302,24 +301,31 @@ public class PaypalServices {
 		/** gets a random billing address */
 		Address billingAddress = getAddress(card.getCardCity());
 
+		/** gets a new credit card */
+		CreditCard creditCard = getCreditCard(card, billingAddress);
 
-		// ###Details
-		// Let's you specify details of a payment amount.
+		PaymentDetails paymentDetails = new PaymentDetails();
+
+		/** Payment Details */
+		//   Let's you specify details of a payment amount.
 		Details details = new Details();
-		details.setShipping("1");
-		details.setSubtotal("5");
-		details.setTax("1");
+		details.setShipping(new Integer(paymentDetails.getShipping()).toString());
+		details.setSubtotal(new Integer(paymentDetails.getSubTotal()).toString());
+		details.setTax(new Integer(paymentDetails.getTax()).toString());
 		
+		String msg = String.format("Payment Details, Shipping=%d, SubTotal=%d, Tax=%d.  Total=%d",
+				paymentDetails.getShipping(), paymentDetails.getSubTotal(), 
+				paymentDetails.getTax(), paymentDetails.getPaymentTotal());
+		
+		logger.info(msg);
+
 		// ###Amount
 		// Let's you specify a payment amount.
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
 		// Total must be equal to sum of shipping, tax and subtotal.
-		amount.setTotal(getPaymentTotal().toString());
+		amount.setTotal(new Integer(paymentDetails.getPaymentTotal()).toString());
 		amount.setDetails(details);
-
-		/** gets a new credit card */
-		CreditCard creditCard = getCreditCard(card, billingAddress);
 
 		// ###Transaction
 		// A transaction defines the contract of a
@@ -401,15 +407,13 @@ public class PaypalServices {
 
 			}
 
-	private Integer getPaymentTotal() {
-		return new Integer(new Random().nextInt(100) + 50);
-	}
-
 	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
 
+		/** Save this exception for Step 4
 		if (card.getCardType().equalsIgnoreCase("Discover")) {
 			throw new Exception("Invalid card, we don't take Discover yet!");
 		}
+		 **/
 
 		// ###CreditCard
 		// A resource representing a credit card that can be
