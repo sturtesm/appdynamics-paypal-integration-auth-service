@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import com.appdynamics.sample.service.PaymentCardInfo.PaymentCard;
+import com.appdynamics.sample.service.PaymentDetails;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.CreditCard;
@@ -303,19 +304,27 @@ public class PaypalServices {
 		Address billingAddress = getAddress(card.getCardCity());
 
 
-		// ###Details
-		// Let's you specify details of a payment amount.
+		PaymentDetails paymentDetails = new PaymentDetails();
+
+		/** Payment Details */
+		//   Let's you specify details of a payment amount.
 		Details details = new Details();
-		details.setShipping("1");
-		details.setSubtotal("5");
-		details.setTax("1");
-		
+		details.setShipping(new Integer(paymentDetails.getShipping()).toString());
+		details.setSubtotal(new Integer(paymentDetails.getSubTotal()).toString());
+		details.setTax(new Integer(paymentDetails.getTax()).toString());
+
+		String msg = String.format("Payment Details, Shipping=%d, SubTotal=%d, Tax=%d.  Total=%d",
+				paymentDetails.getShipping(), paymentDetails.getSubTotal(), 
+				paymentDetails.getTax(), paymentDetails.getPaymentTotal());
+
+		logger.info(msg);
+
 		// ###Amount
 		// Let's you specify a payment amount.
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
 		// Total must be equal to sum of shipping, tax and subtotal.
-		amount.setTotal(getPaymentTotal().toString());
+		amount.setTotal(new Integer(paymentDetails.getPaymentTotal()).toString());
 		amount.setDetails(details);
 
 		/** gets a new credit card */
@@ -399,10 +408,6 @@ public class PaypalServices {
 		}
 		return createdPayment;
 
-			}
-
-	private Integer getPaymentTotal() {
-		return new Integer(new Random().nextInt(100) + 50);
 	}
 
 	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
