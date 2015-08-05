@@ -413,11 +413,6 @@ public class PaypalServices {
 	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
 		
 		logger.info("Got request to pay with credit card: " + card.getCardType());
-		
-		/** Save this exception for Step 4 **/
-		if (card.getCardType().equalsIgnoreCase("Discover")) {
-			throw new InvalidCardException("Invalid card, we don't take Discover yet!");
-		}
 
 		// ###CreditCard
 		// A resource representing a credit card that can be
