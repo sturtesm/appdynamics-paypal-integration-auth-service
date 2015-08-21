@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,7 +14,6 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import com.appdynamics.sample.service.PaymentCardInfo.PaymentCard;
-import com.appdynamics.sample.service.PaymentDetails;
 import com.paypal.api.payments.Address;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.CreditCard;
@@ -291,7 +289,7 @@ public class PaypalServices {
 	@Consumes("text/plain")
 	public Payment createPayment(@PathParam("accessToken") String accessToken) 
 			throws PayPalRESTException, Exception 
-	{
+			{
 		if (accessToken == null) {
 			getAccessToken();
 		}
@@ -303,6 +301,8 @@ public class PaypalServices {
 		/** gets a random billing address */
 		Address billingAddress = getAddress(card.getCardCity());
 
+		/** gets a new credit card */
+		CreditCard creditCard = getCreditCard(card, billingAddress);
 
 		PaymentDetails paymentDetails = new PaymentDetails();
 
@@ -312,11 +312,11 @@ public class PaypalServices {
 		details.setShipping(new Integer(paymentDetails.getShipping()).toString());
 		details.setSubtotal(new Integer(paymentDetails.getSubTotal()).toString());
 		details.setTax(new Integer(paymentDetails.getTax()).toString());
-
+		
 		String msg = String.format("Payment Details, Shipping=%d, SubTotal=%d, Tax=%d.  Total=%d",
 				paymentDetails.getShipping(), paymentDetails.getSubTotal(), 
 				paymentDetails.getTax(), paymentDetails.getPaymentTotal());
-
+		
 		logger.info(msg);
 
 		// ###Amount
@@ -326,9 +326,6 @@ public class PaypalServices {
 		// Total must be equal to sum of shipping, tax and subtotal.
 		amount.setTotal(new Integer(paymentDetails.getPaymentTotal()).toString());
 		amount.setDetails(details);
-
-		/** gets a new credit card */
-		CreditCard creditCard = getCreditCard(card, billingAddress);
 
 		// ###Transaction
 		// A transaction defines the contract of a
@@ -408,12 +405,16 @@ public class PaypalServices {
 		}
 		return createdPayment;
 
-	}
+			}
 
 	private CreditCard getCreditCard(PaymentCard card, Address address) throws Exception {
-		
-		logger.info("Got request to pay with credit card: " + card.getCardType());
-		
+
+		/** Save this exception for Step 4
+		if (card.getCardType().equalsIgnoreCase("Discover")) {
+			throw new Exception("Invalid card, we don't take Discover yet!");
+		}
+		 **/
+
 		// ###CreditCard
 		// A resource representing a credit card that can be
 		// used to fund a payment.
