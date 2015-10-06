@@ -70,9 +70,9 @@ public class PaymentCardInfo {
 
 		cards = new ArrayList<PaymentCard> ();
 
-		cards.add(createCard("6011379098094826", "Discover", "Austin"));
-		cards.add(createCard("5214234539452850", "MasterCard", "Houston"));
-		cards.add(createCard("4539308744420984", "Visa", "Dallas"));
+		cards.add(createCard("6011379098094826", "discover", "Austin"));
+		cards.add(createCard("5214234539452850", "mastercard", "Houston"));
+		cards.add(createCard("4539308744420984", "visa", "Dallas"));
 
 	}
 
@@ -98,7 +98,7 @@ public class PaymentCardInfo {
 		}
 		finally {
 			if (card == null) {
-				card = createCard("4539308744420984", "Visa", "Dallas");
+				card = createCard("4539308744420984", "visa", "Dallas");
 			}
 		}
 		
